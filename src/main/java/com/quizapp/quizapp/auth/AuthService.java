@@ -1,35 +1,53 @@
 package com.quizapp.quizapp.auth;
 
-import com.quizapp.quizapp.admin.Admin;
-import com.quizapp.quizapp.admin.AdminRepository;
-import com.quizapp.quizapp.student.Student;
-import com.quizapp.quizapp.student.StudentRepository;
 import org.springframework.stereotype.Service;
+
+import com.quizapp.quizapp.user.User;
+import com.quizapp.quizapp.user.UserRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class AuthService {
-    private final AdminRepository adminRepo;
-    private final StudentRepository studentRepo;
+    private final UserRepository userRepository;
 
-    public AuthService(AdminRepository adminRepo, StudentRepository studentRepo) {
-        this.adminRepo = adminRepo;
-        this.studentRepo = studentRepo;
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public Role checkCredentials(String username, String password) {
-        // 1) Check admin
-        Admin admin = adminRepo.findByUsername(username).orElse(null);
-        if (admin != null && admin.getPassword().equals(password)) {
-            return Role.ADMIN;
+    public User authenticate(String username, String password) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
         }
-        // 2) Check student
-        Student student = studentRepo.findByUsername(username).orElse(null);
-        if (student != null && student.getPassword().equals(password)) {
-            return Role.STUDENT;
-        }
-        // 3) No match
-        return Role.NONE;
+        return null;
     }
 
-    public enum Role { ADMIN, STUDENT, NONE }
+    public void setCurrentUser(HttpSession session, User user) {
+        session.setAttribute("currentUser", user);
+        session.setAttribute("userId", user.getId());
+        session.setAttribute("username", user.getUsername());
+        session.setAttribute("role", user.getRole().toString());
+    }
+
+    public User getCurrentUser(HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId != null) {
+            return userRepository.findById(userId).orElse(null);
+        }
+        return null;
+    }
+
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
+
+    public boolean isAuthorized(HttpSession session, User.Role... allowedRoles) {
+        User user = getCurrentUser(session);
+        if (user == null) return false;
+        for (User.Role role : allowedRoles) {
+            if (user.getRole() == role) return true;
+        }
+        return false;
+    }
 }

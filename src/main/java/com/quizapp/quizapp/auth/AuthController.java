@@ -2,50 +2,66 @@ package com.quizapp.quizapp.auth;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.quizapp.quizapp.user.User;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
 
-    private final AuthService auth;
+    private final AuthService authService;
 
-    public AuthController(AuthService auth) {
-        this.auth = auth;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     // --- GET /  → show login page -------------------------
     @GetMapping("/")
     public String showLoginPage(@RequestParam(value = "error", required = false) String error,
+                                HttpSession session,
                                 Model model) {
+        // If already logged in, redirect to appropriate dashboard
+        User currentUser = authService.getCurrentUser(session);
+        if (currentUser != null) {
+            return redirectToDashboard(currentUser.getRole());
+        }
+        
         model.addAttribute("error", error != null);
-        return "login";                     // loads templates/login.html
+        return "login";
     }
 
     // --- POST /  → check credentials and redirect ---------
     @PostMapping("/")
     public String handleLogin(@RequestParam String username,
-                              @RequestParam String password) {
+                              @RequestParam String password,
+                              HttpSession session) {
+        User user = authService.authenticate(username, password);
 
-        AuthService.Role role = auth.checkCredentials(username, password);
-
-        switch (role) {
-            case ADMIN:
-                return "redirect:/admin/dashboard";
-            case STUDENT:
-                return "redirect:/student/home";
-            default:
-                return "redirect:/?error=1";
+        if (user != null) {
+            authService.setCurrentUser(session, user);
+            return redirectToDashboard(user.getRole());
+        } else {
+            return "redirect:/?error=1";
         }
     }
 
-    // --- simple pages for testing redirects ---------------
-    @GetMapping("/admin/dashboard")
-    public String adminDashboard() {
-        return "admin-dashboard";           // templates/admin-dashboard.html
+    // --- Logout -------------------------
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        authService.logout(session);
+        return "redirect:/?logout=1";
     }
 
-    @GetMapping("/student/home")
-    public String studentHome() {
-        return "student-home";              // templates/student-home.html
+    // --- Helper method to redirect based on role ---------
+    private String redirectToDashboard(User.Role role) {
+        return switch (role) {
+            case SUPERVISOR_ADMIN -> "redirect:/supervisor/dashboard";
+            case ADMIN -> "redirect:/admin/dashboard";
+            case STUDENT -> "redirect:/student/home";
+        };
     }
 }
