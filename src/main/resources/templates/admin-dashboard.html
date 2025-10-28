@@ -1,286 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Quiz App</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header h1 {
-            color: #f5576c;
-            font-size: 28px;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .user-badge {
-            background: #f5576c;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            padding: 8px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .logout-btn:hover {
-            background: #c0392b;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .stat-card .number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #f5576c;
-        }
-        .section {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        .section h2 {
-            color: #f5576c;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #f5576c;
-            padding-bottom: 10px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: bold;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .btn-primary {
-            background: #f5576c;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #e04556;
-        }
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background: #f5576c;
-            color: white;
-        }
-        tr:hover {
-            background: #f5f5f5;
-        }
-        .alert {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
   </head>
   <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>📚 Quiz App - Admin Dashboard</h1>
-            <div class="user-info">
-                <span class="user-badge">👤 <span th:text="${currentUser.username}">Admin</span></span>
-                <a href="/logout" class="logout-btn">Logout</a>
-            </div>
+      <!-- Header -->
+      <div class="header">
+        <h1>📚 Quiz App - Admin Dashboard</h1>
+        <div class="user-info">
+          <span class="user-badge"
+            >👤 <span th:text="${currentUser.username}">Admin</span></span
+          >
+          <a href="/logout" class="logout-btn">Logout</a>
         </div>
+      </div>
 
-        <!-- Success/Error Messages -->
-        <div th:if="${param.success}" class="alert alert-success">
-            <span th:if="${param.success[0] == 'student_created'}">✓ Student account created successfully!</span>
-            <span th:if="${param.success[0] == 'student_deleted'}">✓ Student deleted successfully!</span>
-        </div>
-        <div th:if="${param.error}" class="alert alert-error">
-            <span th:if="${param.error[0] == 'username_exists'}">✗ Username already exists!</span>
-            <span th:if="${param.error[0] == 'cannot_delete'}">✗ Cannot delete this student!</span>
-        </div>
+      <!-- Success/Error Messages -->
+      <div th:if="${param.success}" class="alert alert-success">
+        <span th:if="${param.success[0] == 'student_created'}"
+          >✓ Student account created successfully!</span
+        >
+        <span th:if="${param.success[0] == 'student_deleted'}"
+          >✓ Student deleted successfully!</span
+        >
+      </div>
+      <div th:if="${param.error}" class="alert alert-error">
+        <span th:if="${param.error[0] == 'username_exists'}"
+          >✗ Username already exists!</span
+        >
+        <span th:if="${param.error[0] == 'cannot_delete'}"
+          >✗ Cannot delete this student!</span
+        >
+      </div>
 
-        <!-- Statistics -->
-        <div class="stats">
-            <div class="stat-card">
-                <h3>TOTAL STUDENTS</h3>
-                <div class="number" th:text="${totalStudents}">0</div>
-            </div>
-            <div class="stat-card">
-                <h3>TOTAL QUIZZES</h3>
-                <div class="number" th:text="${totalQuizzes}">0</div>
-            </div>
+      <!-- Statistics -->
+      <div class="stats">
+        <div class="stat-card">
+          <h3>TOTAL STUDENTS</h3>
+          <div class="number" th:text="${totalStudents}">0</div>
         </div>
+        <div class="stat-card">
+          <h3>TOTAL QUIZZES</h3>
+          <div class="number" th:text="${totalQuizzes}">0</div>
+        </div>
+      </div>
 
-        <!-- Create Student Form -->
-        <div class="section">
-            <h2>➕ Create Student Account</h2>
-            <form action="/admin/create-student" method="post">
-                <div class="form-group">
-                    <label for="student-username">Username:</label>
-                    <input type="text" id="student-username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="student-password">Password:</label>
-                    <input type="password" id="student-password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="student-fullname">Full Name:</label>
-                    <input type="text" id="student-fullname" name="fullName">
-                </div>
-                <div class="form-group">
-                    <label for="student-email">Email:</label>
-                    <input type="email" id="student-email" name="email">
-                </div>
-                <button type="submit" class="btn btn-primary">Create Student</button>
-            </form>
-        </div>
+      <!-- Create Student Form -->
+      <div class="section">
+        <h2>➕ Create Student Account</h2>
+        <form action="/admin/create-student" method="post">
+          <div class="form-group">
+            <label for="student-username">Username:</label>
+            <input type="text" id="student-username" name="username" required />
+          </div>
+          <div class="form-group">
+            <label for="student-password">Password:</label>
+            <input
+              type="password"
+              id="student-password"
+              name="password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="student-fullname">Full Name:</label>
+            <input type="text" id="student-fullname" name="fullName" />
+          </div>
+          <div class="form-group">
+            <label for="student-email">Email:</label>
+            <input type="email" id="student-email" name="email" />
+          </div>
+          <button type="submit" class="btn btn-primary">Create Student</button>
+        </form>
+      </div>
 
-        <!-- Students List -->
-        <div class="section">
-            <h2>👨‍🎓 Student Accounts</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="student : ${students}">
-                        <td th:text="${student.id}">1</td>
-                        <td th:text="${student.username}">student1</td>
-                        <td th:text="${student.fullName}">Jane Doe</td>
-                        <td th:text="${student.email}">student@example.com</td>
-                        <td>
-                            <form action="#" th:action="@{/admin/delete-student/{id}(id=${student.id})}" 
-                                  method="post" style="display: inline;" 
-                                  onsubmit="return confirm('Are you sure you want to delete this student?');">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(students)}">
-                        <td colspan="5" style="text-align: center; color: #999;">No students created yet</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <!-- Students List -->
+      <div class="section">
+        <h2>👨‍🎓 Student Accounts</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="student : ${students}">
+              <td th:text="${student.id}">1</td>
+              <td th:text="${student.username}">student1</td>
+              <td th:text="${student.fullName}">Jane Doe</td>
+              <td th:text="${student.email}">student@example.com</td>
+              <td>
+                <form
+                  action="#"
+                  th:action="@{/admin/delete-student/{id}(id=${student.id})}"
+                  method="post"
+                  style="display: inline"
+                  onsubmit="return confirm('Are you sure you want to delete this student?');"
+                >
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(students)}">
+              <td colspan="5" style="text-align: center; color: #999">
+                No students created yet
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Quizzes List -->
-        <div class="section">
-            <h2>📝 Quizzes</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Quiz Title</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="quiz : ${quizzes}">
-                        <td th:text="${quiz.id}">1</td>
-                        <td th:text="${quiz.title}">Sample Quiz</td>
-                        <td th:text="${quiz.description}">Quiz description</td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(quizzes)}">
-                        <td colspan="3" style="text-align: center; color: #999;">No quizzes available</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <!-- Quizzes List -->
+      <div class="section">
+        <h2>📝 Quizzes</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Quiz Title</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="quiz : ${quizzes}">
+              <td th:text="${quiz.id}">1</td>
+              <td th:text="${quiz.title}">Sample Quiz</td>
+              <td th:text="${quiz.description}">Quiz description</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(quizzes)}">
+              <td colspan="3" style="text-align: center; color: #999">
+                No quizzes available
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </body>
 </html>

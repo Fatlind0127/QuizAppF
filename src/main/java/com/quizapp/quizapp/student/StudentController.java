@@ -43,17 +43,17 @@ public class StudentController {
     }
 
     // --- View Available Quizzes ---
-    @GetMapping("/quizzes")
-    public String viewQuizzes(HttpSession session, Model model) {
-        if (!authService.isAuthorized(session, User.Role.STUDENT)) {
-            return "redirect:/?error=unauthorized";
-        }
+    // @GetMapping("/quizzes")
+    // public String viewQuizzes(HttpSession session, Model model) {
+    //     if (!authService.isAuthorized(session, User.Role.STUDENT)) {
+    //         return "redirect:/?error=unauthorized";
+    //     }
 
-        List<Quiz> quizzes = quizRepository.findAll();
-        model.addAttribute("quizzes", quizzes);
-        model.addAttribute("currentUser", authService.getCurrentUser(session));
+    //     List<Quiz> quizzes = quizRepository.findAll();
+    //     model.addAttribute("quizzes", quizzes);
+    //     model.addAttribute("currentUser", authService.getCurrentUser(session));
 
-        return "student-quizzes";
-    }
+    //     return "student-quizzes";
+    // }
 }
 

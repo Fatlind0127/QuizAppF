@@ -54,59 +54,59 @@ public class AdminController {
     }
 
     // --- Create Student ---
-    @PostMapping("/create-student")
-    public String createStudent(@RequestParam String username,
-                               @RequestParam String password,
-                               @RequestParam(required = false) String fullName,
-                               @RequestParam(required = false) String email,
-                               HttpSession session) {
-        if (!authService.isAuthorized(session, User.Role.ADMIN)) {
-            return "redirect:/?error=unauthorized";
-        }
+    // @PostMapping("/create-student")
+    // public String createStudent(@RequestParam String username,
+    //                            @RequestParam String password,
+    //                            @RequestParam(required = false) String fullName,
+    //                            @RequestParam(required = false) String email,
+    //                            HttpSession session) {
+    //     if (!authService.isAuthorized(session, User.Role.ADMIN)) {
+    //         return "redirect:/?error=unauthorized";
+    //     }
 
-        if (userRepository.existsByUsername(username)) {
-            return "redirect:/admin/dashboard?error=username_exists";
-        }
+    //     if (userRepository.existsByUsername(username)) {
+    //         return "redirect:/admin/dashboard?error=username_exists";
+    //     }
 
-        User student = new User();
-        student.setUsername(username);
-        student.setPassword(password);
-        student.setRole(User.Role.STUDENT);
-        student.setFullName(fullName);
-        student.setEmail(email);
-        userRepository.save(student);
+    //     User student = new User();
+    //     student.setUsername(username);
+    //     student.setPassword(password);
+    //     student.setRole(User.Role.STUDENT);
+    //     student.setFullName(fullName);
+    //     student.setEmail(email);
+    //     userRepository.save(student);
 
-        return "redirect:/admin/dashboard?success=student_created";
-    }
+    //     return "redirect:/admin/dashboard?success=student_created";
+    // }
 
     // --- Delete Student ---
-    @PostMapping("/delete-student/{id}")
-    public String deleteStudent(@PathVariable Integer id, HttpSession session) {
-        if (!authService.isAuthorized(session, User.Role.ADMIN)) {
-            return "redirect:/?error=unauthorized";
-        }
+    // @PostMapping("/delete-student/{id}")
+    // public String deleteStudent(@PathVariable Integer id, HttpSession session) {
+    //     if (!authService.isAuthorized(session, User.Role.ADMIN)) {
+    //         return "redirect:/?error=unauthorized";
+    //     }
 
-        User student = userRepository.findById(id).orElse(null);
-        if (student != null && student.getRole() == User.Role.STUDENT) {
-            userRepository.deleteById(id);
-            return "redirect:/admin/dashboard?success=student_deleted";
-        }
+    //     User student = userRepository.findById(id).orElse(null);
+    //     if (student != null && student.getRole() == User.Role.STUDENT) {
+    //         userRepository.deleteById(id);
+    //         return "redirect:/admin/dashboard?success=student_deleted";
+    //     }
 
-        return "redirect:/admin/dashboard?error=cannot_delete";
-    }
+    //     return "redirect:/admin/dashboard?error=cannot_delete";
+    // }
 
     // --- View Students ---
-    @GetMapping("/students")
-    public String viewStudents(HttpSession session, Model model) {
-        if (!authService.isAuthorized(session, User.Role.ADMIN)) {
-            return "redirect:/?error=unauthorized";
-        }
+    // @GetMapping("/students")
+    // public String viewStudents(HttpSession session, Model model) {
+    //     if (!authService.isAuthorized(session, User.Role.ADMIN)) {
+    //         return "redirect:/?error=unauthorized";
+    //     }
 
-        List<User> students = userRepository.findByRole(User.Role.STUDENT);
-        model.addAttribute("students", students);
-        model.addAttribute("currentUser", authService.getCurrentUser(session));
+    //     List<User> students = userRepository.findByRole(User.Role.STUDENT);
+    //     model.addAttribute("students", students);
+    //     model.addAttribute("currentUser", authService.getCurrentUser(session));
 
-        return "admin-students";
-    }
+    //     return "admin-students";
+    // }
 }
 
