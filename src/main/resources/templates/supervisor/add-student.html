@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student Accounts</title>
+    <script>
+        function addStudentField() {
+            const container = document.getElementById('students-container');
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="surname" placeholder="Surname" required>
+                <button type="button" onclick="removeStudentField(this)">-</button>
+                <br><br>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeStudentField(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</head>
+<body>
+    <h1>Add Student Accounts</h1>
+
+    <form action="/supervisor/add-student" method="post">
+        <label>Class Name:</label>
+        <input type="text" name="className" placeholder="11A" required>
+        <br><br>
+
+        <div id="students-container">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="surname" placeholder="Surname" required>
+            <br><br>
+        </div>
+
+        <button type="button" onclick="addStudentField()">+</button>
+        <br><br>
+
+        <button type="submit">Save Students</button>
+    </form>
+</body>
+</html>

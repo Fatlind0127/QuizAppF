@@ -38,10 +38,12 @@ public class User {
     @Column(length = 100)
     private String email;
 
+    @Column(name = "class_name", length = 50)
+    private String className;
+
     public enum Role {
         SUPERVISOR_ADMIN,
         ADMIN,
         STUDENT
     }
 }
-
