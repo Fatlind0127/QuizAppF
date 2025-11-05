@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quizapp.quizapp.user.User;
 import com.quizapp.quizapp.user.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 @RequestMapping("/supervisor")
@@ -23,9 +24,11 @@ public class AddStudentController {
     private final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AddStudentController(UserRepository userRepository) {
+    public AddStudentController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/add-student")
@@ -50,13 +53,13 @@ public class AddStudentController {
 
             String username = (firstName.substring(0, 1).toLowerCase() + "." + lastName.toLowerCase()).replaceAll("\\s+", "");
             username = ensureUniqueUsername(username);
-            String password = generateSecurePassword(8);
+            String password = buildStudentPassword(firstName, lastName);
 
 
             User student = new User();
             student.setFullName(firstName + " " + lastName);
             student.setUsername(username);
-            student.setPassword(password);
+            student.setPassword(passwordEncoder.encode(password));
             student.setRole(User.Role.STUDENT);
             student.setEmail(null);
             student.setClassName(className);
@@ -97,5 +100,12 @@ public class AddStudentController {
             n++;
         }
         return candidate;
+    }
+
+    private String buildStudentPassword(String firstName, String lastName) {
+        String f = firstName == null ? "" : firstName.trim().toLowerCase();
+        String l = lastName == null ? "" : lastName.trim().toLowerCase();
+        String lInitial = l.isEmpty() ? (f.isEmpty() ? "s" : f.substring(0,1)) : l.substring(0,1);
+        return lInitial + "." + f;
     }
 }

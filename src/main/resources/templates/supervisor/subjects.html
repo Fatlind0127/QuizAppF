@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manage Subjects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 24px; background:#f6f7f9; }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+      .grid { display:grid; grid-template-columns: 1fr; gap:16px; }
+      .card { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:16px; }
+      .muted { color:#6b7280; font-size:14px; }
+      table { width:100%; border-collapse: collapse; }
+      th, td { padding: 10px; border-bottom:1px solid #e5e7eb; text-align:left; }
+      th { background:#f9fafb; }
+      .row-actions { display:flex; gap:8px; }
+      .btn { display:inline-block; padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; background:#f3f4f6; color:#111; text-decoration:none; font-weight:600; }
+      .danger { background:#fee2e2; }
+      form { display:inline; margin:0; }
+      input[type=text] { padding:10px; border:1px solid #e5e7eb; border-radius:8px; width:260px; }
+      .submit { background:#5a78ff; color:#fff; border:0; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div style="margin-bottom:12px">
+        <a class="btn" href="/supervisor/dashboard">Back to Dashboard</a>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="muted">Add New Subject</div>
+          <form action="/supervisor/subjects" method="post" style="margin-top:10px; display:flex; gap:8px; align-items:center;">
+            <input type="text" name="name" placeholder="Subject name" required />
+            <button class="btn submit" type="submit">Add</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="muted">Subjects</div>
+          <table style="margin-top:10px;">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="s : ${subjects}">
+                <td th:text="${s.id}">1</td>
+                <td th:text="${s.name}">Subject</td>
+                <td>
+                  <div class="row-actions">
+                    <a class="btn" th:href="@{'/supervisor/subjects/' + ${s.id} + '/edit'}">Edit</a>
+                    <form th:action="@{'/supervisor/subjects/' + ${s.id} + '/delete'}" method="post">
+                      <button class="btn danger" type="submit">Delete</button>
+                    </form>
+                    <a class="btn" th:href="@{'/supervisor/subjects/' + ${s.id} + '/classes'}">View Classes & Students</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+ </html>
+
+

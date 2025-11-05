@@ -22,10 +22,27 @@
 </head>
 <body>
     <h1>Add Student Accounts</h1>
+    <div style="margin: 8px 0 16px;">
+        <a href="/supervisor/dashboard" style="display:inline-block;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;background:#f3f4f6;color:#111;text-decoration:none;font-weight:600;">Back to Dashboard</a>
+    </div>
 
     <form action="/supervisor/add-student" method="post">
         <label>Class Name:</label>
         <input type="text" name="className" placeholder="11A" required>
+        <br><br>
+
+        <label>Assign Teacher:</label>
+        <select name="teacherId" required>
+            <option value="" disabled selected>Select a teacher</option>
+            <option th:each="t : ${admins}" th:value="${t.id}" th:text="${t.fullName != null ? t.fullName + ' (' + t.username + ')' : t.username}"></option>
+        </select>
+        <br><br>
+
+        <label>Subject:</label>
+        <select name="subjectId" required>
+            <option value="" disabled selected>Select a subject</option>
+            <option th:each="s : ${subjects}" th:value="${s.id}" th:text="${s.name}"></option>
+        </select>
         <br><br>
 
         <div id="students-container">

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Students</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 24px; background:#f6f7f9; }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+      .actions { margin-bottom: 12px; }
+      .link-btn { display:inline-block; padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; background:#f3f4f6; color:#111; text-decoration:none; font-weight:600; }
+      table { width:100%; background:#fff; border:1px solid #e5e7eb; border-radius:10px; border-collapse: collapse; }
+      th, td { padding: 10px; border-bottom: 1px solid #e5e7eb; text-align:left; }
+      th { background:#f9fafb; }
+      .row-actions { display:flex; gap:8px; }
+      .small-btn { display:inline-block; padding:6px 10px; border:1px solid #e5e7eb; border-radius:8px; background:#eef2ff; color:#111; text-decoration:none; font-weight:600; }
+      .danger { background:#fee2e2; }
+      form { display:inline; margin:0; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="actions">
+        <a class="link-btn" href="/supervisor/dashboard">Back to Dashboard</a>
+      </div>
+      <h2>Student List</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Class</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="u : ${users}">
+            <td th:text="${u.id}">1</td>
+            <td th:text="${u.username}">student</td>
+            <td th:text="${u.fullName}">Full Name</td>
+            <td th:text="${u.email}">email</td>
+            <td th:text="${u.className}">11A</td>
+            <td>
+              <div class="row-actions">
+                <a class="small-btn" th:href="@{'/supervisor/edit-user/' + ${u.id}}">Edit</a>
+                <form th:action="@{'/supervisor/delete-user/' + ${u.id}}" method="post">
+                  <input type="hidden" name="redirectTo" value="/supervisor/list-students" />
+                  <button type="submit" class="small-btn danger">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+ </html>
+
+

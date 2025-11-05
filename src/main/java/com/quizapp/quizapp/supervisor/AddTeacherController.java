@@ -9,6 +9,7 @@ import com.quizapp.quizapp.user.User;
 import com.quizapp.quizapp.user.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 @RequestMapping("/supervisor")
@@ -16,10 +17,12 @@ public class AddTeacherController {
 
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AddTeacherController(AuthService authService, UserRepository userRepository) {
+    public AddTeacherController(AuthService authService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.authService = authService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Show form
@@ -74,7 +77,7 @@ public class AddTeacherController {
         teacher.setFullName(trimmedName);
         teacher.setEmail(email == null ? null : email.trim());
         teacher.setUsername(username);
-        teacher.setPassword(finalPassword); // NOTE: consider hashing later
+        teacher.setPassword(passwordEncoder.encode(finalPassword));
         teacher.setRole(User.Role.ADMIN);
 
         userRepository.save(teacher);

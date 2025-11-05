@@ -1,6 +1,7 @@
 package com.quizapp.quizapp.auth;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.quizapp.quizapp.user.User;
 import com.quizapp.quizapp.user.UserRepository;
@@ -10,14 +11,31 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class AuthService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User authenticate(String username, String password) {
         User user = userRepository.findByUsername(username).orElse(null);
-        if (user != null && user.getPassword().equals(password)) {
+        if (user == null) return null;
+
+        String stored = user.getPassword();
+        boolean isHashed = stored != null && stored.startsWith("$2");
+
+        if (isHashed) {
+            if (passwordEncoder.matches(password, stored)) {
+                return user;
+            }
+            return null;
+        }
+
+        // Backward-compat: if stored is plaintext and matches, upgrade to hash once
+        if (stored != null && stored.equals(password)) {
+            user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
             return user;
         }
         return null;

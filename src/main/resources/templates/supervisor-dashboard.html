@@ -89,7 +89,10 @@
             >Supervisor</span
           >
         </h1>
-        <div class="muted">Supervisor Dashboard</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="muted">Supervisor Dashboard</div>
+          <a class="btn" href="/logout">Logout</a>
+        </div>
       </header>
 
       <div class="cards">
@@ -110,19 +113,41 @@
       </div>
 
       <div class="section">
-        <div class="muted">Quick Actions (links can be wired later)</div>
+        <div class="muted">Quick Actions</div>
         <hr />
-        <div class="grid">
-          <a class="btn" href="/supervisor/add-teacher">Add Teacher Account</a>
-          <a class="btn" href="/supervisor/add-student">Add Student Account</a>
-          <a class="btn" href="/supervisor/assign-users"
-            >Assign Users to Class</a
-          >
-          <a class="btn" href="/supervisor/create-class">Create Class</a>
-          <a class="btn" href="/supervisor/manage-classes">Manage Classes</a>
-          <a class="btn" href="/supervisor/manage-users"
-            >Manage User Accounts</a
-          >
+        <div style="display:grid; gap:16px;">
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Teachers</div>
+            <div class="grid">
+              <a class="btn" href="/supervisor/add-teacher">Add Teacher Account</a>
+              <a class="btn" href="/supervisor/list-teachers">View Teachers List</a>
+            </div>
+          </div>
+
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Classes</div>
+            <div class="grid">
+              <a class="btn" href="/supervisor/create-class">Create Class</a>
+              <a class="btn" href="/supervisor/manage-classes">Manage Classes</a>
+              <a class="btn" href="/supervisor/assign-users">Assign Users to Class</a>
+              <a class="btn" href="/supervisor/subjects">Manage Subjects</a>
+            </div>
+          </div>
+
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Students</div>
+            <div class="grid">
+              <a class="btn" href="/supervisor/add-student">Add Student Account</a>
+              <a class="btn" href="/supervisor/list-students">View Student List</a>
+            </div>
+          </div>
+
+          <div>
+            <div class="muted" style="margin-bottom:8px;">Other</div>
+            <div class="grid">
+              <a class="btn" href="/supervisor/manage-users">Manage User Accounts</a>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit User</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 24px; background:#f6f7f9; }
+      .wrap { max-width: 640px; margin: 0 auto; }
+      .card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px; }
+      .row { margin-bottom: 12px; }
+      label { display:block; font-size:14px; margin-bottom:6px; color:#374151; }
+      input { width:100%; padding:10px; border:1px solid #e5e7eb; border-radius:8px; }
+      .btn { display:inline-block; padding:10px 14px; border:1px solid #e5e7eb; border-radius:10px; background:#f3f4f6; color:#111; text-decoration:none; font-weight:600; }
+      .submit { background:#5a78ff; color:#fff; border:0; }
+      .top { margin-bottom:12px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <a class="btn" th:href="${backTo}">Back</a>
+        <a class="btn" href="/supervisor/dashboard">Dashboard</a>
+      </div>
+      <div class="card">
+        <h2>Edit User</h2>
+        <form th:action="@{'/supervisor/edit-user/' + ${user.id}}" method="post">
+          <div class="row">
+            <label>Username</label>
+            <input name="username" th:value="${user.username}" required />
+          </div>
+          <div class="row">
+            <label>Full Name</label>
+            <input name="fullName" th:value="${user.fullName}" />
+          </div>
+          <div class="row">
+            <label>Email</label>
+            <input name="email" th:value="${user.email}" />
+          </div>
+          <div class="row" th:if="${user.role.name() == 'STUDENT'}">
+            <label>Class Name</label>
+            <input name="className" th:value="${user.className}" />
+          </div>
+          <hr style="margin:16px 0; border:0; border-top:1px solid #e5e7eb;" />
+          <div class="row">
+            <label>New Password (leave empty to keep current password)</label>
+            <input name="newPassword" type="password" placeholder="Optional" />
+          </div>
+          <div class="row">
+            <label>Confirm New Password</label>
+            <input name="confirmPassword" type="password" placeholder="Optional" />
+          </div>
+          <input type="hidden" name="backTo" th:value="${backTo}" />
+          <button class="btn submit" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+  </body>
+ </html>
+
+

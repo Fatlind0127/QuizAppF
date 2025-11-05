@@ -92,25 +92,23 @@ CREATE TABLE IF NOT EXISTS student_answers (
 -- Insert Default SupervisorAdmin Account
 -- ====================================
 -- Note: Spring Boot will automatically create this, but you can use this if needed
-INSERT INTO users (username, password, role, full_name, email)
-VALUES ('SupervisorAdmin', '1234', 'SUPERVISOR_ADMIN', 'Supervisor Administrator', 'supervisor@quizapp.com')
-ON DUPLICATE KEY UPDATE username = username;
+-- WARNING: Do not insert plaintext passwords. The application seeds a hashed
+-- SupervisorAdmin automatically at startup. If manual seeding is required,
+-- use a bcrypt-hashed password value instead of plaintext.
+-- Example (hash corresponds to "1234"):
+-- INSERT INTO users (username, password, role, full_name, email)
+-- VALUES ('SupervisorAdmin', '$2a$10$M0l6xW8p3bLQq0w1oK2Lwe6m3VxN1mEugkX0y2t7b6D1t7ZcIYk5e', 'SUPERVISOR_ADMIN', 'Supervisor Administrator', 'supervisor@quizapp.com')
+-- ON DUPLICATE KEY UPDATE username = username;
 
 -- ====================================
 -- Sample Data (Optional - for testing)
 -- ====================================
 
 -- Create sample admin
-INSERT INTO users (username, password, role, full_name, email)
-VALUES ('admin1', 'admin123', 'ADMIN', 'John Admin', 'admin1@quizapp.com')
-ON DUPLICATE KEY UPDATE username = username;
+-- Sample admin removed to avoid plaintext password. Use the application UI.
 
 -- Create sample students
-INSERT INTO users (username, password, role, full_name, email)
-VALUES 
-    ('student1', 'student123', 'STUDENT', 'Alice Student', 'student1@quizapp.com'),
-    ('student2', 'student123', 'STUDENT', 'Bob Student', 'student2@quizapp.com')
-ON DUPLICATE KEY UPDATE username = username;
+-- Sample students removed to avoid plaintext password. Use the application UI.
 
 -- Create sample quiz
 INSERT INTO quizzes (title, description, created_by)

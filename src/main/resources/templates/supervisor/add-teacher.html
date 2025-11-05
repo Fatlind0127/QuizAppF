@@ -53,11 +53,30 @@
       .ok {
         color: #065f46;
       }
+      .actions {
+        max-width: 640px;
+        margin: 0 auto 12px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .link-btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        background: #f3f4f6;
+        color: #111;
+        text-decoration: none;
+        font-weight: 600;
+      }
     </style>
   </head>
   <body>
     <div th:if="${error}" class="msg err" th:text="${'Error: ' + error}"></div>
     <div th:if="${success}" class="msg ok">Teacher created successfully.</div>
+    <div class="actions">
+      <a class="link-btn" href="/supervisor/dashboard">Back to Dashboard</a>
+    </div>
 
     <div class="card">
       <form method="post" action="/supervisor/add-teacher">

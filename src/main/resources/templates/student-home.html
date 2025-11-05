@@ -45,6 +45,8 @@
             padding: 8px 15px;
             border-radius: 20px;
             font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
         }
         .logout-btn {
             background: #e74c3c;
@@ -138,7 +140,7 @@
         <div class="header">
             <h1>🎓 Quiz App - Student Portal</h1>
             <div class="user-info">
-                <span class="user-badge">👤 <span th:text="${currentUser.username}">Student</span></span>
+                <a class="user-badge" href="/student/account">👤 <span th:text="${currentUser.username}">Student</span></a>
                 <a href="/logout" class="logout-btn">Logout</a>
             </div>
         </div>
@@ -191,5 +193,6 @@
             </ul>
         </div>
     </div>
+    
 </body>
 </html>

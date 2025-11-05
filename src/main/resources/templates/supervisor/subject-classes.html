@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Subject Classes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 24px; background:#f6f7f9; }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+      .btn { display:inline-block; padding:8px 12px; border:1px solid #e5e7eb; border-radius:8px; background:#f3f4f6; color:#111; text-decoration:none; font-weight:600; }
+      table { width:100%; border-collapse: collapse; background:#fff; border:1px solid #e5e7eb; border-radius:10px; }
+      th, td { padding:10px; border-bottom:1px solid #e5e7eb; text-align:left; }
+      th { background:#f9fafb; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div style="margin-bottom:12px; display:flex; gap:8px;">
+        <a class="btn" href="/supervisor/subjects">Back to Subjects</a>
+        <a class="btn" href="/supervisor/dashboard">Dashboard</a>
+      </div>
+      <h2 th:text="${'Classes for ' + subject.name}">Classes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Class Name</th>
+            <th>Teacher</th>
+            <th>Students Count</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="r : ${rows}">
+            <td th:text="${r.className}">11A</td>
+            <td th:text="${r.teacher}">teacher1</td>
+            <td th:text="${r.studentCount}">0</td>
+            <td>
+              <a class="btn" th:href="@{'/supervisor/classes/' + ${r.className} + '/students'}">View Students</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+ </html>
+
+
