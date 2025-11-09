@@ -1,8 +1,22 @@
 [ {
-  "Username" : "l.bilguri",
-  "Teacher" : "Fatlind",
-  "Class" : "Grupi A1 11:00",
+  "Username" : "r.zogaj",
+  "Teacher" : "LIS",
+  "Class" : "grupi r ",
   "ID" : 1,
-  "Subject" : "Front End",
-  "Password" : "b.ledri"
+  "Subject" : "Back End",
+  "Password" : "z.raes"
+}, {
+  "Username" : "e.ramanii",
+  "Teacher" : "LIS",
+  "Class" : "grupi r ",
+  "ID" : 2,
+  "Subject" : "Back End",
+  "Password" : "r.enesss"
+}, {
+  "Username" : "h.bojaxhiu",
+  "Teacher" : "LIS",
+  "Class" : "grupi r ",
+  "ID" : 3,
+  "Subject" : "Back End",
+  "Password" : "b.haris"
 } ]
